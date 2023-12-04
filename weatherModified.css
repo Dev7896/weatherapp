@@ -8,10 +8,7 @@
     box-sizing: border-box;
 }
 body  {
-    /* background-image: url("background_image_1.jpg"); */
-    background-image: url("winter.jpg");
     background-repeat: no-repeat;
-    /* background-position: ; */
     background-size:cover;
     background-attachment: fixed;
     
