@@ -95,7 +95,6 @@ let changeCity = async ()=> {
         document.querySelector(".city").innerHTML = cityname;
     
     try {
-        let data = await getWeatherInformation(cityname);
         // console.log(data)
         setCurrentWeatherForecast(data);
         getAirQualityIndex(cityname).then((result) => {
@@ -105,6 +104,7 @@ let changeCity = async ()=> {
             // Calling setAirQualityIndex with lat and lon
             setAirQualityIndex(cityname ,{ lat, lon });
           });
+        let data = await getWeatherInformation(cityname);
           getHourlyForecast(cityname).then((result) => {
             setHourlyForecast(result)
           })
