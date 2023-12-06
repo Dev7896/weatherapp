@@ -7,7 +7,7 @@ let i = 1; // firstcity to be updated in localstorage
 let getWeatherInformation = async (city) => {
     try {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`);
-        return await response.json();
+          return await response.json();
     } catch (error) {
         console.error("Error fetching weather information:", error);
     }
@@ -56,14 +56,12 @@ function setCurrentWeatherForecast({coord : {dt} ,main : {humidity , temp , temp
 } 
 
 function updateLocalStorage(cityname) {
-    console.log(i)
+    // console.log(i)
 if(i <= 7){
-    let consult = window.prompt("want to add city in your list? yes[y] : no[n]")
-    if(consult == 'y' || consult == 'yes'){
+    // let consult = window.prompt("want to add city in your list? yes[y] : no[n]")
 
         localStorage.setItem(`city${i}` , cityname);
-        document.querySelector(`.symbol-container .city${i}`).innerHTML = localStorage.getItem(`city${i}`); 
-    }
+        document.querySelector(`.symbol-container .city${i}`).innerHTML = localStorage.getItem(`city${i}`);  
 }else {
     window.alert("you can add upto 7 cities only")
 }
@@ -87,26 +85,25 @@ function setSymbolContainerValues() {
 
 let changeCity = async ()=> {
     cityname = window.prompt("enter the city name?");
-    // console.log(cityname)
 
     if(cityname == '' || cityname == null){
         //
     }else{
-        document.querySelector(".city").innerHTML = cityname;
-    
-    try {
-        // console.log(data)
+      
+      try {
+        let data = await getWeatherInformation(cityname);
         setCurrentWeatherForecast(data);
         getAirQualityIndex(cityname).then((result) => {
-            // Extracting lat and lon
-            const { lat, lon } = result[0];
+          // Extracting lat and lon
+          const { lat, lon } = result[0];
           
-            // Calling setAirQualityIndex with lat and lon
-            setAirQualityIndex(cityname ,{ lat, lon });
-          });
-        let data = await getWeatherInformation(cityname);
+          // Calling setAirQualityIndex with lat and lon
+          setAirQualityIndex(cityname ,{ lat, lon });
+        });
+        document.querySelector(".city").innerHTML = cityname;
           getHourlyForecast(cityname).then((result) => {
             setHourlyForecast(result)
+            setFiveDayForecast(result)
           })
     } catch (error) {
         console.error("Error loading weather information:", error);
@@ -132,6 +129,7 @@ let changeCityByList = async(cityvalue)=>{
           });
           getHourlyForecast(cityname).then((result) => {
             setHourlyForecast(result)
+            setFiveDayForecast(result)
           })
     } catch (error) {
         console.error("Error loading weather information:", error);
@@ -250,8 +248,8 @@ document.querySelector('.all-gaseous-data .co').innerHTML = `
 let getHourlyForecast = async (city)=> {
     try {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${api_key}&units=metric`);
-
         return await response.json();
+
     } catch (error) {
         console.error("Error fetching weather information:", error);
     }
